@@ -55,7 +55,7 @@
 				<section>
 					<h2>What is it?</h2>
 					<p>
-						Use JavasScript to generate or modify sound
+						A Javascript API to generate and modify sound
 						<br/>and output through your browser.  
 
 					</p>
@@ -121,7 +121,7 @@ catch(e) {
 					<h2>Step 1: You need a sound source</h2>
 					<p>It can be a sound file, the microphone,  
 						<br/>or you can generate a sound wave using the API
-						
+					<br/><a href="http://modernweb.com/2014/03/31/creating-sound-with-the-web-audio-api-and-oscillators/">examples</a>
 					<pre><code data-trim contenteditable>
 var osc = context.createOscillator();
 osc.start(0);
@@ -131,12 +131,13 @@ osc.stop(1); // play for one second
 				</section>
 
 				<section>
-					<h2>Sounds</h2>
-					<p>Each sound can only be played once, at a specific point in time. 
-					</p>
-					<p>You need to create a new oscillator for each new note.
-					</p>
+					<h2>Tones</h2>
+					<pre><code data-trim contenteditable>
+var osc = context.createOscillator();
+osc.frequency.value = 261.6 // middle C
+					</code></pre>
 				</section>
+
 
 				<section>
 					<h2>Step 2: Volume</h2>
@@ -157,12 +158,21 @@ gain.gain.linearRampToValueAtTime(1, 2)
 				<section>
 					<h2>Step 3: Connect the pipeline</h2>
 					<p>
+					<img src="images/gain.png">
+					<br/>Source: <a href="http://www.html5rocks.com/en/tutorials/webaudio/intro/">Getting Started with the Web Audio API</a>
 					</p>
 					<pre><code data-trim contenteditable>
 osc.connect(gain);
 gain.connect(context.destination);
 					</code></pre>
 
+				</section>
+
+				<section>
+					<h2>Tutorial Time</h2>
+					<p>
+						http://github.com/daphnechong/music-matrix-tutorial
+					</p>
 				</section>
 			</div>
 
