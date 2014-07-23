@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Web Audio API</title>
+
+		<meta name="description" content="An introductory tutorial on the Web Audio API">
+		<meta name="author" content="Daphne Chong">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+		<script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h2>An Intro to the Web Audio API</h2>
+					<h4>Daphne Chong</h4>
+					<p>
+						<small>
+							<br/><a href="http://twitter.com/daphnechong">@daphnechong</a>
+						</small>
+					</p>
+				</section>
+
+				<section>
+					<h2>What is it?</h2>
+					<p>
+						A Javascript API to generate and modify sound
+						<br/>and output through your browser.  
+
+					</p>
+				</section>
+
+				<!-- Example of nested vertical slides -->
+				<section>
+					<section>
+						<h2>Examples</h2>
+
+						<p>
+							<a href="http://labs.dinahmoe.com/ToneCraft/#">ToneCraft</a> 
+						</p>
+						<p>
+							<a href="http://findtheinvisiblecow.com/">Find the Invisible Cow</a>
+						</p>
+						<p>
+							<a href="http://www.jamwithchrome.com/">Jam With Chrome</a>
+						</p>
+					</section>
+				</section>
+
+				<section>
+					<h2>Browser Support</h2>
+					<p>
+						<img src="images/webaudiosupport.png"/>
+						<br/>Source: <a href="http://caniuse.com/audio-api">http://caniuse.com/audio-api</a>
+					</p>
+				</section>
+
+				<section>
+					<h2>It's a pipeline</h2>
+					<p>
+						<img src="images/pipeline2.jpg">
+						<br/>Source: <a href="http://proguitarshop.com/media/cms/blog/gear.jpg">http://proguitarshop.com/media/cms/blog/gear.jpg</a>
+					</p>
+					
+				</section>
+
+				<section>
+					<h2>Start with a Context</h2>
+					<p>Everything you do to load, manipulate and play sounds will be done through the AudioContext.
+						<!--HERE -->
+						<!-- <ul>
+							<li>Generate/load sound sources
+							<li>Create filters to modify sound
+							<li>Output to speakers from the browser. 
+						</ul> -->
+					</p>
+					<pre><code data-trim contenteditable>
+try {
+  window.AudioContext = window.AudioContext||window.webkitAudioContext;
+  context = new AudioContext();
+}
+catch(e) {
+  // IE :(
+  console.log('Web Audio API is not supported in this browser.');
+}
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Step 1: You need a sound source</h2>
+					<p>It can be a sound file, the microphone,  
+						<br/>or you can generate a sound wave using the API
+					<br/><a href="http://modernweb.com/2014/03/31/creating-sound-with-the-web-audio-api-and-oscillators/">examples</a>
+					<pre><code data-trim contenteditable>
+var osc = context.createOscillator();
+osc.start(0);
+osc.stop(1); // play for one second
+					</code></pre>
+					</p>
+				</section>
+
+				<section>
+					<h2>Tones</h2>
+					<pre><code data-trim contenteditable>
+var osc = context.createOscillator();
+osc.frequency.value = 261.6 // middle C
+					</code></pre>
+				</section>
+
+
+				<section>
+					<h2>Step 2: Volume</h2>
+					<p>
+						Volume is controlled by a GainNode. 
+						<br/><a href="http://www.softsynth.com/webaudio/gainramp.php">some examples</a>
+	<pre><code data-trim contenteditable>
+var gain = context.createGain();
+gain.gain.value = 0.5;  // 50% volume
+
+// ramp up to full volume over two seconds
+gain.gain.linearRampToValueAtTime(1, 2) 
+					</code></pre>
+
+					</p>
+				</section>
+
+				<section>
+					<h2>Step 3: Connect the pipeline</h2>
+					<p>
+					<img src="images/gain.png">
+					<br/>Source: <a href="http://www.html5rocks.com/en/tutorials/webaudio/intro/">Getting Started with the Web Audio API</a>
+					</p>
+					<pre><code data-trim contenteditable>
+osc.connect(gain);
+gain.connect(context.destination);
+					</code></pre>
+
+				</section>
+
+				<section>
+					<h2>Tutorial Time</h2>
+					<p>
+						http://github.com/daphnechong/music-matrix-tutorial
+					</p>
+				</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
